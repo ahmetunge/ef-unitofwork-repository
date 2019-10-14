@@ -5,13 +5,13 @@ namespace EfCoreTransactionTest.Api.DataAccess
 {
     public class DbFactory : IDbFactory, IDisposable
     {
-        private readonly EfDbContext _dbContext;
-        public DbFactory(EfDbContext dbContext)
+        private readonly EfSQLDbContext _dbContext;
+        public DbFactory(EfSQLDbContext dbContext)
         {
             _dbContext = dbContext;
         }
 
-        public EfDbContext GetEfDbContext
+        public EfSQLDbContext GetEfDbContext
         {
             get
             {

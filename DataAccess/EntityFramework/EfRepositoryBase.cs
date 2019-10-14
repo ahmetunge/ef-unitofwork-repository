@@ -7,7 +7,7 @@ namespace EfCoreTransactionTest.Api.DataAccess.EntityFramework
 {
     public class EfRepositoryBase<T> : IRepositoryBase<T> where T : class
     {
-        private readonly EfDbContext _dataContext;
+        private readonly EfSQLDbContext _dataContext;
         public EfRepositoryBase(IDbFactory dbFactory)
         {
             _dataContext = dbFactory.GetEfDbContext;

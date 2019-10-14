@@ -3,9 +3,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace EfCoreTransactionTest.Api.DataAccess.EntityFramework
 {
-    public class EfDbContext : DbContext
+    public class EfSQLDbContext : DbContext
     {
-        public EfDbContext(DbContextOptions<EfDbContext> options) : base(options)
+        public EfSQLDbContext(DbContextOptions<EfSQLDbContext> options) : base(options)
         {
 
         }

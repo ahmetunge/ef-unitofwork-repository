@@ -17,15 +17,7 @@ namespace EfCoreTransactionTest.Api.Controllers
         [HttpPost]
         public ActionResult Add([FromBody]Article article)
         {
-            try
-            {
-                _articleBusiness.Add(article);
-                return Ok();
-            }
-            catch (System.Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
+            return Ok();
         }
     }
 }

@@ -4,6 +4,6 @@ namespace EfCoreTransactionTest.Api.DataAccess
 {
     public interface IDbFactory
     {
-         EfDbContext GetEfDbContext{get;}
+         EfSQLDbContext GetEfDbContext{get;}
     }
 }
