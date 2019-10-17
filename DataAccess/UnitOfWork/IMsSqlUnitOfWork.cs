@@ -1,7 +1,7 @@
 namespace EfCoreTransactionTest.Api.DataAccess.UnitOfWork
 {
-    public interface ISaveChanges
+    public interface IMsSqlUnitOfWork:IUnitOfWork 
     {
-         void SaveChanges();
+
     }
 }

@@ -17,6 +17,7 @@ namespace EfCoreTransactionTest.Api.Controllers
         [HttpPost]
         public ActionResult Add([FromBody]Article article)
         {
+            _articleBusiness.AddToMsSqlWithTransaction(article);
             return Ok();
         }
     }

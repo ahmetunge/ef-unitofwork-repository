@@ -7,48 +7,68 @@ namespace EfCoreTransactionTest.Api.Business
 {
     public class ArticleBusiness : IArticleBusiness
     {
-        private readonly ITransactionAsync _transactionAsync;
-        private readonly ITransaction _transaction;
-        private readonly ISaveChanges _saveChanges;
-        private readonly ISaveChangesAsync _saveChangesAsync;
+        private readonly IMsSqlUnitOfWork _msSqlUnitOfWork;
+        private readonly IArticleRepository _articleRepository;
 
         public ArticleBusiness(
-            ITransactionAsync transactionAsync, 
-            ITransaction transaction,
-            ISaveChanges saveChanges,
-            ISaveChangesAsync saveChangesAsync
+            IMsSqlUnitOfWork msSqlUnitOfWork,
+            IArticleRepository articleRepository
             )
         {
-            _transactionAsync = transactionAsync;
-            _transaction = transaction;
-            _saveChanges = saveChanges;
-            _saveChangesAsync = saveChangesAsync;
+            _msSqlUnitOfWork = msSqlUnitOfWork;
+            _articleRepository = articleRepository;
         }
 
-        public void Add(Article article)
+        public void AddToMsSql(Article article)
         {
-            _saveChanges.SaveChanges();
+            Article art = GetArticle();
+
+            _articleRepository.Add(art);
+            _msSqlUnitOfWork.SaveChanges();
+
         }
 
-        public void AddAsync(Article article)
+        public void AddToMsSqlWithTransaction(Article article)
         {
-            _saveChangesAsync.SaveChangesAsync();
+            try
+            {
+                _msSqlUnitOfWork.BeginTransaction();
+
+                Article article1 = GetArticle();
+                _articleRepository.Add(article1);
+
+                _msSqlUnitOfWork.SaveChanges();
+
+                Article article2 = GetArticle();
+                _articleRepository.Add(article2);
+
+                throw new Exception();
+                
+                _msSqlUnitOfWork.SaveChanges();
+
+                _msSqlUnitOfWork.Commit();
+            }
+            catch (Exception ex)
+            {
+                Console.Write(ex.Message);
+                _msSqlUnitOfWork.RollBack();
+            }
         }
 
-        public void AddWithTransaction(Article article)
+
+        private Article GetArticle()
         {
-            _transaction.Begin();
-            _transaction.SaveChanges();
-            _transaction.Commit();
-            _transaction.RollBack();
+            string dateNow = DateTime.Now.Date.ToString();
+            Article article = new Article();
+
+            article.CategoryId = 2;
+            article.Content = "Article Content-" + dateNow + "-" + Guid.NewGuid();
+            article.IsActive = true;
+            article.Title = "Article Title-" + dateNow + "-" + Guid.NewGuid();
+
+            return article;
+
         }
 
-        public void AddWithTransactionAsync(Article article)
-        {
-            _transactionAsync.BeginAsync();
-            _transactionAsync.SaveChangesAsync();
-            _transactionAsync.Commit();
-            _transactionAsync.RollBack();
-        }
     }
 }

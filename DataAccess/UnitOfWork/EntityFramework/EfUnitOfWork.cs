@@ -1,49 +1,50 @@
 using System;
+using Microsoft.EntityFrameworkCore;
 
 namespace EfCoreTransactionTest.Api.DataAccess.UnitOfWork.EntityFramework
 {
-    public class EfUnitOfWork : IUnitOfWork,ITransaction,ITransactionAsync,ISaveChanges,ISaveChangesAsync
+    public class EfUnitOfWork :IUnitOfWork
     {
-        private readonly IDbFactory _dbFactory;
-        public EfUnitOfWork(IDbFactory dbFactory)
+        private readonly DbContext _context;
+        public EfUnitOfWork(DbContext context)
         {
-            _dbFactory = dbFactory;
+            _context = context;
         }
 
-        public void Begin()
+        public void BeginTransaction()
         {
-            _dbFactory.GetEfDbContext.Database.BeginTransaction();
+            _context.Database.BeginTransaction();
         }
 
         public void Commit()
         {
-            _dbFactory.GetEfDbContext.Database.CommitTransaction();
+            _context.Database.CommitTransaction();
         }
 
         public void SaveChanges()
         {
-            _dbFactory.GetEfDbContext.SaveChanges();
+            _context.SaveChanges();
         }
 
         public void RollBack()
         {
-            _dbFactory.GetEfDbContext.Database.RollbackTransaction();
+            _context.Database.RollbackTransaction();
         }
 
         public void Dispose()
         {
-            _dbFactory.GetEfDbContext.Dispose();
+            _context.Dispose();
         }
 
-        public void BeginAsync()
+        public void BeginTransactionAsync()
         {
-             _dbFactory.GetEfDbContext.Database.BeginTransactionAsync();
+             _context.Database.BeginTransactionAsync();
         }
 
 
         public void SaveChangesAsync()
         {
-            _dbFactory.GetEfDbContext.SaveChangesAsync();
+            _context.SaveChangesAsync();
         }
     }
 }
