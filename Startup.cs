@@ -14,8 +14,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 
 namespace EfCoreTransactionTest.Api
 {
@@ -31,17 +29,11 @@ namespace EfCoreTransactionTest.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<EfSQLDbContext>(db => db.UseSqlServer(Configuration.GetConnectionString("SqlServerConnection")));
+            services.AddDbContext<EfMsSqlDbContext>(db => db.UseSqlServer(Configuration.GetConnectionString("SqlServerConnection")));
 
-            services.AddScoped<IUnitOfWork, EfUnitOfWork>();
-            services.AddScoped<ITransactionAsync, EfUnitOfWork>();
-            services.AddScoped<ITransaction, EfUnitOfWork>();
-            services.AddScoped<ISaveChanges, EfUnitOfWork>();
-            services.AddScoped<ISaveChangesAsync, EfUnitOfWork>();
-
-            services.AddScoped<IDbFactory, DbFactory>();
             services.AddScoped<IArticleRepository, EfArticleRepository>();
             services.AddScoped<IArticleBusiness, ArticleBusiness>();
+            services.AddScoped<IMsSqlUnitOfWork, EfMsSqlUnitOfWork>();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }

@@ -2,15 +2,16 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using Microsoft.EntityFrameworkCore;
 
 namespace EfCoreTransactionTest.Api.DataAccess.EntityFramework
 {
     public class EfRepositoryBase<T> : IRepositoryBase<T> where T : class
     {
-        private readonly EfSQLDbContext _dataContext;
-        public EfRepositoryBase(IDbFactory dbFactory)
+        protected readonly DbContext _dataContext;
+        public EfRepositoryBase(DbContext dataContext)
         {
-            _dataContext = dbFactory.GetEfDbContext;
+            _dataContext = dataContext;
         }
 
         public void Add(T entity)

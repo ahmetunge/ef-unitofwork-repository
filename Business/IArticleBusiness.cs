@@ -4,9 +4,7 @@ namespace EfCoreTransactionTest.Api.Business
 {
     public interface IArticleBusiness
     {
-        void AddWithTransactionAsync(Article article);
-        void AddWithTransaction(Article article);
-        void Add(Article article);
-        void AddAsync(Article article);
+        void AddToMsSql(Article article);
+        void AddToMsSqlWithTransaction(Article article);
     }
 }

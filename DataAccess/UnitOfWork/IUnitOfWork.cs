@@ -4,7 +4,12 @@ namespace EfCoreTransactionTest.Api.DataAccess.UnitOfWork
     {
         void Commit();
         void RollBack();
+        void BeginTransaction();
 
+        void BeginTransactionAsync();
 
+        void SaveChanges();
+
+        void SaveChangesAsync();
     }
 }
